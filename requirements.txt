@@ -1,0 +1,3 @@
+-Visual Studio: https://visualstudio.microsoft.com/downloads/ (At least 2015)
+
+-Python2.7 or Python3

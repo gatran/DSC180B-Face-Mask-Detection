@@ -1,0 +1,4 @@
+{
+    "path2data": "./data/val2017",
+    "path2json": "./data/annotations/instances_val2017.json"
+}
