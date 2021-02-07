@@ -1,0 +1,11 @@
+{"load_image_path":{
+    "image_input_path_train_covered": "/datasets/MaskedFace-Net/train/covered/07962_Mask.jpg"},
+"save_image_path": {
+    "gb_path": "./gb.jpg",
+    "cam_gb_path":  "./cam_gb.jpg",
+    "cam_path": "./cam.jpg"
+    },
+"cuda": {
+     "use_cuda": true
+    }
+}

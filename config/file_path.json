@@ -1,0 +1,4 @@
+{
+    "train_path": "src/models/train_model.py",
+    "gradcam_path": "src/models/gradcam.py"
+}
