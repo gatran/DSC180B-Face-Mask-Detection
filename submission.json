@@ -1,5 +1,5 @@
 {
     "GitHub Repository": "https://github.com/gatran/DSC180B-Face-Mask-Detection",
-    "DockerHub Repository": "<dockerhub repo url>"
+    "DockerHub Repository": "athena112233/dsc180b_docker:latest"
 }
 
