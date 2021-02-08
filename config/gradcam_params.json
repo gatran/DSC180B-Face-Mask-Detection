@@ -1,9 +1,9 @@
 {"load_image_path":{
-    "image_input_path_train_covered": "/datasets/MaskedFace-Net/train/covered/07962_Mask.jpg"},
+    "image_input_path_train_covered": "/datasets/MaskedFace-Net/train/uncovered/63670.jpg"},
 "save_image_path": {
-    "gb_path": "./gb.jpg",
-    "cam_gb_path":  "./cam_gb.jpg",
-    "cam_path": "./cam.jpg"
+    "gb_path": "./gb_63670.jpg",
+    "cam_gb_path":  "./cam_gb_63670.jpg",
+    "cam_path": "./cam_63670.jpg"
     },
 "cuda": {
      "use_cuda": true
