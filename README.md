@@ -1,6 +1,6 @@
 # DSC180B Face Mask Detection
 
-This repository focuses on the creation of a Face Mask Detection (website/app/report)
+This repository focuses on the creation of a Face Mask Detection report.
 
 -----------------------------------------------------------------------------------------------------------------
 
