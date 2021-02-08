@@ -36,10 +36,9 @@ def main(targets):
         gradcam_fp = load_params(fp_params)['gradcam_path']
         input_gradcam_params = load_params(gradcam_params)
         input_images = input_gradcam_params["load_image_path"]["image_input_path_train_covered"]
-        #input_cuda = input_gradcam_params['cuda']['use_cuda']
         save_images = input_gradcam_params['save_image_path']
         #print("python " + gradcam_fp + " --image-path " + input_images + " --use_cuda " + input_cuda)
-        os.system("python " + gradcam_fp + " --image-path " + input_images + " --use-cuda")
+        os.system("python " + gradcam_fp + " --image-path " + input_images + " --save-path-gb " + save_images['gb_path'] + " --save-path-cam-gb " + save_images['cam_gb_path'] + " --save-path-cam " + save_images['cam_path'] + " --use-cuda")
         
 
 if __name__ == '__main__':

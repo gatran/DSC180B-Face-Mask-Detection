@@ -75,11 +75,13 @@ def preprocess_image(img):
 
 
 def show_cam_on_image(img, mask):
+    args = get_args()
     heatmap = cv2.applyColorMap(np.uint8(255 * mask), cv2.COLORMAP_JET)
     heatmap = np.float32(heatmap) / 255
     cam = heatmap + np.float32(img)
     cam = cam / np.max(cam)
-    cv2.imwrite("results/cam.jpg", np.uint8(255 * cam))
+    cv2.imwrite('results/' + args.save_path_cam, np.uint8(255 * cam))
+    #cv2.imwrite("results/cam.jpg", np.uint8(255 * cam))
 
 
 class GradCam:
@@ -211,6 +213,12 @@ def get_args():
                         help='Use NVIDIA GPU acceleration')
     parser.add_argument('--image-path', type=str, default='./examples/both.png',
                         help='Input image path')
+    parser.add_argument('--save-path-gb', type=str, default='./examples/both.png',
+                        help='Output image path for gb')
+    parser.add_argument('--save-path-cam-gb', type=str, default='./examples/both.png',
+                        help='Output image path for cam gb')
+    parser.add_argument('--save-path-cam', type=str, default='./examples/both.png',
+                        help='Output image path for cam')
     args = parser.parse_args()
     args.use_cuda = args.use_cuda and torch.cuda.is_available()
     if args.use_cuda:
@@ -268,5 +276,7 @@ if __name__ == '__main__':
     cam_gb = deprocess_image(cam_mask*gb)
     gb = deprocess_image(gb)
 
-    cv2.imwrite('results/gb.jpg', gb)
-    cv2.imwrite('results/cam_gb.jpg', cam_gb)
+    cv2.imwrite('results/' + args.save_path_gb, gb)
+    cv2.imwrite('results/' + args.save_path_cam_gb, cam_gb)
+    #cv2.imwrite('results/gb.jpg', gb)
+    #cv2.imwrite('results/cam_gb.jpg', cam_gb)
