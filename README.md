@@ -37,7 +37,7 @@ To run this repo, run the following lines in a terminal
 ```
 launch-scipy-ml-gpu.sh
 git clone https://github.com/gatran/DSC180B-Face-Mask-Detection
-cd DSC180B
+cd DSC180B-Face-Mask-Detection
 python run.py test
 ```
 
