@@ -48,7 +48,7 @@ if __name__ == '__main__':
     
     #Load in the saved training model
     net = Net()
-    net.load_state_dict(torch.load("model_v1.pt"))
+    net.load_state_dict(torch.load("src/models/model_v1.pt"))
     
     #Change directory to where the datasets are
     os.chdir("/datasets" + "/MaskedFace-Net")
@@ -60,7 +60,7 @@ if __name__ == '__main__':
          transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
     maskedface_net_val = torchvision.datasets.ImageFolder("../MaskedFace-Net/validation", transform=transform_val)
     val_sub = torch.utils.data.Subset(maskedface_net_val, np.random.choice(len(maskedface_net_val), 10, replace=False))
-    data_loader_val_sub = torch.utils.data.DataLoader(maskedface_net_val,
+    data_loader_val_sub = torch.utils.data.DataLoader(val_sub,
                                                       batch_size=32, #4
                                                       shuffle=True)
     
@@ -73,7 +73,7 @@ if __name__ == '__main__':
             outputs = net(inputs)
             predicted = labels
             total += labels.size(0)
-            label_tensor_maxs = torch.tensor([torch.argmax(x) for x in outputs]) #Used to be labels
+            label_tensor_maxs = torch.tensor([torch.argmax(x) for x in labels])
             correct += (predicted == label_tensor_maxs).sum().item()
 
     print('Accuracy of the model on the test subset: %d %%' % (100 * correct / total))
