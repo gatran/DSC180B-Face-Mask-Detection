@@ -6,7 +6,7 @@ import sys
 import json
 import shutil
 
-from src.gradcam import *
+#from src.gradcam import *
 
 data_ingest_params = './config/data-params.json'
 fp_params = './config/file_path.json'
@@ -22,24 +22,29 @@ def main(targets):
     
     if 'clean' in targets:
         shutil.rmtree('results/', ignore_errors=True)
-     
-    if 'train' in targets:
-        if not os.path.isdir('results'):
-            os.makedirs('results') 
-        train_fp = load_params(fp_params)['train_path']
-        input_train_params = load_params(train_params)
-        batch_size = input_train_params['batch_size']
-        learning_rate = input_train_params['learning_rate']
-        num_epochs = input_train_params['num_epochs']
-        os.system("python " + train_fp + " --batch-size " + str(batch_size) + " --learning-rate " + str(learning_rate) + " --num-epochs " + str(num_epochs) + " --use-cuda")
+#     
+#    if 'train' in targets:
+#        if not os.path.isdir('results'):
+#            os.makedirs('results') 
+#        train_fp = load_params(fp_params)['train_path']
+#        input_train_params = load_params(train_params)
+#        batch_size = input_train_params['batch_size']
+#        learning_rate = input_train_params['learning_rate']
+#        num_epochs = input_train_params['num_epochs']
+#        os.system("python " + train_fp + " --batch-size " + str(batch_size) + " --learning-rate " + str(learning_rate) + " --num-epochs " + #str(num_epochs) + " --use-cuda")
         
     # This is currently executing the gradcam.py file (as specified in notebook_path). This needs to be changed! (Should generate performance table instead)
+#    if "test" in targets:       
+#        if not os.path.isdir('results'):
+#            os.makedirs('results')            
+        # This is "python gradcam.py --image-path test/COCOimg.jpg" (Needs to be changed as well)
+#        os.system("python " + load_params(data_ingest_params)["notebook_path"] + " --image-path "+ load_params(data_ingest_params)["img"])
+        
     if "test" in targets:       
         if not os.path.isdir('results'):
             os.makedirs('results')            
-        # This is "python gradcam.py --image-path test/COCOimg.jpg" (Needs to be changed as well)
-        os.system("python " + load_params(data_ingest_params)["notebook_path"] + " --image-path "+ load_params(data_ingest_params)["img"])
-        
+        os.system("python " + load_params(data_ingest_params)["test_model"])
+    
     if "gradcam" in targets:      
         # Check if directory "results" is created
         if not os.path.isdir('results'):
