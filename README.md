@@ -44,12 +44,13 @@ python run.py
 To run this repo, run the following lines in a terminal
 
 ```
-launch-scipy-ml.sh
+launch-scipy-ml-gpu.sh
 git clone https://github.com/gatran/DSC180B-Face-Mask-Detection
 cd DSC180B
-python run.py
+python run.py test
 ```
 
 ##### Contributions
-* 
-* Che-Wei Lin: write the report and heled to develop the codes.
+* Gavin Tran: train the model and generate output
+* Che-Wei Lin: implement gradcam and generate output
+* Athena Liu: create a report based on those outputs
