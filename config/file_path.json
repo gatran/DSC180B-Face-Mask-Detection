@@ -1,4 +1,6 @@
 {
-    "train_path": "src/models/train_model.py",
-    "gradcam_path": "src/models/gradcam.py"
+    "train_path": "src/train.py",
+    "model_path": "src/nn_model.py",
+    "test_path": "src/test.py",
+    "gradcam_path": "src/gradcam.py"
 }
