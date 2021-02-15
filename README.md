@@ -1,9 +1,9 @@
 # DSC180B Face Mask Detection
 
 This repository focuses on the creation of a Face Mask Detection report.
+Link to website: https://athena112233.github.io/DSC180B_Project_Webpage/
 
 -----------------------------------------------------------------------------------------------------------------
-
 
 ### Introduction
 * This repo is about training an Convolutional Neunral Network(CNN) image classification model on MaskedFace-Net. MaskedFace-Net is a dataset that contains more than 60,000 images of person either wearing a mask not. For images that contain a person wearing a mask, the dataset is further splited into either a person is wearing a mask properly or not. In this repo, we've trained a model on this dataset and also implemented a Grad-CAM algorithm on the model.
