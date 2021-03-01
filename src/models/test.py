@@ -51,14 +51,14 @@ if __name__ == '__main__':
     net.load_state_dict(torch.load("src/models/model_v1.pt"))
     
     #Change directory to where the datasets are
-    os.chdir("/datasets" + "/MaskedFace-Net")
+    #os.chdir("/datasets" + "/MaskedFace-Net")
 
     #Read in the test data, grab a subset, and apply transformations on the dataset
     transform_val = transforms.Compose(
         [transforms.Resize((100, 100)),
          transforms.ToTensor(),
          transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-    maskedface_net_val = torchvision.datasets.ImageFolder("../MaskedFace-Net/validation", transform=transform_val)
+    maskedface_net_val = torchvision.datasets.ImageFolder("/datasets/MaskedFace-Net/validation", transform=transform_val)
     val_sub = torch.utils.data.Subset(maskedface_net_val, np.random.choice(len(maskedface_net_val), 10, replace=False))
     data_loader_val_sub = torch.utils.data.DataLoader(val_sub,
                                                       batch_size=32, #4

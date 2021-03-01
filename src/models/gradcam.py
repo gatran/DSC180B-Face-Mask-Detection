@@ -80,7 +80,7 @@ def show_cam_on_image(img, mask):
     heatmap = np.float32(heatmap) / 255
     cam = heatmap + np.float32(img)
     cam = cam / np.max(cam)
-    cv2.imwrite('results/' + args.save_path_cam, np.uint8(255 * cam))
+    cv2.imwrite('results/gradcam/' + args.save_path_cam, np.uint8(255 * cam))
     #cv2.imwrite("results/cam.jpg", np.uint8(255 * cam))
 
 
@@ -251,7 +251,8 @@ if __name__ == '__main__':
     # Can work with any model, but it assumes that the model has a
     # feature method, and a classifier method,
     # as in the VGG models in torchvision.
-    model = models.resnet50(pretrained=True)
+    #model = models.resnet50(pretrained=True)
+    model = torch.load("../DSC180B-Face-Mask-Detection/models/model_resnet_best_val_acc_0.955.pt")
     grad_cam = GradCam(model=model, feature_module=model.layer4, \
                        target_layer_names=["2"], use_cuda=args.use_cuda)
 
@@ -276,7 +277,7 @@ if __name__ == '__main__':
     cam_gb = deprocess_image(cam_mask*gb)
     gb = deprocess_image(gb)
 
-    cv2.imwrite('results/' + args.save_path_gb, gb)
-    cv2.imwrite('results/' + args.save_path_cam_gb, cam_gb)
+    cv2.imwrite('results/gradcam/' + args.save_path_gb, gb)
+    cv2.imwrite('results/gradcam/' + args.save_path_cam_gb, cam_gb)
     #cv2.imwrite('results/gb.jpg', gb)
     #cv2.imwrite('results/cam_gb.jpg', cam_gb)
