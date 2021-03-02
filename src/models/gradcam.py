@@ -219,6 +219,8 @@ def get_args():
                         help='Output image path for cam gb')
     parser.add_argument('--save-path-cam', type=str, default='./examples/both.png',
                         help='Output image path for cam')
+    parser.add_argument('--model-path', type=str, default='./examples/both.png',
+                        help='Model path')
     args = parser.parse_args()
     args.use_cuda = args.use_cuda and torch.cuda.is_available()
     if args.use_cuda:
@@ -241,7 +243,7 @@ def deprocess_image(img):
 if __name__ == '__main__':
     """ python grad_cam.py <path_to_image>
     1. Loads an image with opencv.
-    2. Preprocesses it for VGG19 and converts to a pytorch variable.
+    2. Preprocesses it for resnet50 and converts to a pytorch variable.
     3. Makes a forward pass to find the category index with the highest score,
     and computes intermediate activations.
     Makes the visualization. """
@@ -252,7 +254,7 @@ if __name__ == '__main__':
     # feature method, and a classifier method,
     # as in the VGG models in torchvision.
     #model = models.resnet50(pretrained=True)
-    model = torch.load("../DSC180B-Face-Mask-Detection/models/model_resnet_best_val_acc_0.955.pt")
+    model = torch.load(args.model_path)
     grad_cam = GradCam(model=model, feature_module=model.layer4, \
                        target_layer_names=["2"], use_cuda=args.use_cuda)
 

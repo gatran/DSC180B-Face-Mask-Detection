@@ -11,6 +11,7 @@ import shutil
 data_ingest_params = './config/data-params.json'
 fp_params = './config/file_path.json'
 gradcam_params = './config/gradcam_params.json'
+ig_params = './config/ig_params.json'
 train_params = './config/train_params.json'
 test_params = './config/test_params.json'
 
@@ -22,8 +23,13 @@ def load_params(fp):
 def main(targets):
     
     if 'clean' in targets:
-        shutil.rmtree('results/', ignore_errors=True)
-#     
+        shutil.rmtree('results/gradcam/', ignore_errors=True)
+        shutil.rmtree('results/model_prediction/', ignore_errors=True)
+        shutil.rmtree('results/integrated_gradient/', ignore_errors=True)
+        os.mkdir('results/gradcam')
+        os.mkdir('results/model_prediction')
+        os.mkdir('results/integrated_gradient')
+#       os
 #    if 'train' in targets:
 #        if not os.path.isdir('results'):
 #            os.makedirs('results') 
@@ -54,7 +60,8 @@ def main(targets):
         input_gradcam_params = load_params(gradcam_params)
         input_images = input_gradcam_params["load_image_path"]["image_input_path_train_covered"]
         save_images = input_gradcam_params['save_image_path']
-        os.system("python " + gradcam_fp + " --image-path " + input_images + " --save-path-gb " + save_images['gb_path'] + " --save-path-cam-gb " + save_images['cam_gb_path'] + " --save-path-cam " + save_images['cam_path'] + " --use-cuda")
+        model_path = input_gradcam_params['model_path']
+        os.system("python " + gradcam_fp + " --image-path " + input_images + " --save-path-gb " + save_images['gb_path'] + " --save-path-cam-gb " + save_images['cam_gb_path'] + " --save-path-cam " + save_images['cam_path'] + " --model-path " + model_path + " --use-cuda")
        
     if "training" in targets:
         if not os.path.isdir('models'):
@@ -87,7 +94,19 @@ def main(targets):
             
         os.system("python " + test_fp + " --model-name " + model_name + " --model-path " + model_path + " --batch-size " + str(batch_size) + " --use-cuda")
         
-
+    if "ig" in targets:
+        if not os.path.isdir('models'):
+            print("No models available. Train a model first")
+            sys.exit(0)
+            
+        ig_fp = load_params(fp_params)['ig_path']
+        input_ig_params = load_params(ig_params)
+        img_load_path = input_ig_params['image_load_path']
+        img_save_path = input_ig_params['image_save_path']
+        model_path = input_ig_params['model_path']
+        
+        os.system("python " + ig_fp + " --img-load-path " + img_load_path + " --img-save-path " + img_save_path + " --model-path " + model_path + " --use-cuda")
+        
 if __name__ == '__main__':
     targets = sys.argv[1:]
     main(targets)
