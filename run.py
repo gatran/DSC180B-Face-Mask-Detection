@@ -29,33 +29,12 @@ def main(targets):
         os.mkdir('results/gradcam')
         os.mkdir('results/model_prediction')
         os.mkdir('results/integrated_gradient')
-#       os
-#    if 'train' in targets:
-#        if not os.path.isdir('results'):
-#            os.makedirs('results') 
-#        train_fp = load_params(fp_params)['train_path']
-#        input_train_params = load_params(train_params)
-#        batch_size = input_train_params['batch_size']
-#        learning_rate = input_train_params['learning_rate']
-#        num_epochs = input_train_params['num_epochs']
-#        os.system("python " + train_fp + " --batch-size " + str(batch_size) + " --learning-rate " + str(learning_rate) + " --num-epochs " + #str(num_epochs) + " --use-cuda")
-        
-    # This is currently executing the gradcam.py file (as specified in notebook_path). This needs to be changed! (Should generate performance table instead)
-#    if "test" in targets:       
-#        if not os.path.isdir('results'):
-#            os.makedirs('results')            
-        # This is "python gradcam.py --image-path test/COCOimg.jpg" (Needs to be changed as well)
-#        os.system("python " + load_params(data_ingest_params)["notebook_path"] + " --image-path "+ load_params(data_ingest_params)["img"])
-        
-    if "test" in targets:       
-        if not os.path.isdir('results'):
-            os.makedirs('results')            
-        os.system("python " + load_params(data_ingest_params)["test_model"])
     
     if "gradcam" in targets:      
         # Check if directory "results" is created
-        if not os.path.isdir('results'):
-            os.makedirs('results')
+        if not os.path.isdir('results/gradcam'):
+            os.makedirs('results/gradcam')
+        
         gradcam_fp = load_params(fp_params)['gradcam_path']
         input_gradcam_params = load_params(gradcam_params)
         input_images = input_gradcam_params["load_image_path"]["image_input_path_train_covered"]
@@ -87,7 +66,10 @@ def main(targets):
         if not os.path.isdir('models'):
             print("No models available. Train a model first")
             sys.exit(0)
-         
+        
+        if not os.path.isdir('results/model_prediction'):
+            os.mkdir('results/model_prediction')
+            
         test_fp = load_params(fp_params)['test_path']
         input_test_params = load_params(test_params)
         model_name = input_test_params['model_name']
@@ -110,6 +92,9 @@ def main(targets):
             print("No models available. Train a model first")
             sys.exit(0)
             
+        if not os.path.isdir('results/integrated_gradient'):
+            os.mkdir('results/integrated_gradient')
+            
         ig_fp = load_params(fp_params)['ig_path']
         input_ig_params = load_params(ig_params)
         img_load_path = input_ig_params['image_load_path']
@@ -123,6 +108,8 @@ def main(targets):
             os.system("python " + ig_fp + " --img-load-path " + img_load_path + " --img-save-path " + img_save_path + " --model-path " + model_path + " --use-cuda")
         
 if __name__ == '__main__':
+    if not os.path.isdir('results'):
+        os.makedirs('results')
     targets = sys.argv[1:]
     main(targets)
 

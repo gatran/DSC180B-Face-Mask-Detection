@@ -145,22 +145,17 @@ if __name__ == '__main__':
         
     # Use MaskedFace-Net 
     maskedface_net_val = image_datasets['validation']
-    val_sub = torch.utils.data.Subset(maskedface_net_val, np.random.choice(len(maskedface_net_val), len(maskedface_net_val), replace=False))
+    val_sub = torch.utils.data.Subset(maskedface_net_val, np.random.choice(len(maskedface_net_val), test_size, replace=False))
     data_loader_val_sub = torch.utils.data.DataLoader(val_sub,
                                                       batch_size=batch_size, 
                                                       shuffle=True)
     
     maskedface_net_test = image_datasets['holdout']
-    test_sub = torch.utils.data.Subset(maskedface_net_test, np.random.choice(len(maskedface_net_test), len(maskedface_net_test), replace=False))
+    test_sub = torch.utils.data.Subset(maskedface_net_test, np.random.choice(len(maskedface_net_test), test_size, replace=False))
     data_loader_test_sub = torch.utils.data.DataLoader(test_sub,
                                                       batch_size=batch_size, 
                                                       shuffle=True)
     
-    maskedface_net_train = image_datasets['train']
-    train_sub = torch.utils.data.Subset(maskedface_net_train, np.random.choice(len(maskedface_net_train), len(maskedface_net_train), replace=False))
-    data_loader_train_sub = torch.utils.data.DataLoader(train_sub,
-                                                      batch_size=batch_size, 
-                                                      shuffle=True)
     try:
         model = torch.load(model_path)
     except:
@@ -174,21 +169,9 @@ if __name__ == '__main__':
     val_total = 0
     test_correct = 0
     test_total = 0
-    train_correct = 0
-    train_total = 0
-    print("len of train:", len(maskedface_net_train))
     print("len of val:", len(maskedface_net_val))
     print("len of test:", len(maskedface_net_test))
     with torch.no_grad():
-        for train_inputs, train_labels in data_loader_train_sub:
-            train_inputs = train_inputs.to(device)
-            train_labels = train_labels.to(device)
-            train_outputs = model(train_inputs)
-            _, predicted = torch.max(train_outputs.data, 1)
-            train_total += train_labels.size(0)
-            train_correct += (predicted == train_labels).sum().item()
-            print('train correct:', train_correct)
-            print("train total:" , train_total)
         for val_inputs, val_labels in data_loader_val_sub:
             val_inputs = val_inputs.to(device)
             val_labels = val_labels.to(device)
