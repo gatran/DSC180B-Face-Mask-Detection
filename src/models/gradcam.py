@@ -1,3 +1,15 @@
+################################################################
+# Implemented by Jacob Gildenblat (jacob.gildenblat@gmail.com) #
+#                                                              #
+# PyTorch-compatible implmentation of Grad-CAM proposed in     # 
+# "Grad-CAM: Visual Explanations from Deep Networks            #
+#  via Gradient-based Localization"                            #
+# (https://arxiv.org/abs/1610.02391).                          #
+#                                                              #
+#                                                              #
+################################################################
+
+import sys
 import os
 import argparse
 import cv2
@@ -213,6 +225,8 @@ def get_args():
                         help='Use NVIDIA GPU acceleration')
     parser.add_argument('--image-path', type=str, default='./examples/both.png',
                         help='Input image path')
+    parser.add_argument('--custom-image-path', type=str, default=None,
+                        help='Custom image path')
     parser.add_argument('--save-path-gb', type=str, default='./examples/both.png',
                         help='Output image path for gb')
     parser.add_argument('--save-path-cam-gb', type=str, default='./examples/both.png',
@@ -253,15 +267,25 @@ if __name__ == '__main__':
     # Can work with any model, but it assumes that the model has a
     # feature method, and a classifier method,
     # as in the VGG models in torchvision.
-    #model = models.resnet50(pretrained=True)
-    model = torch.load(args.model_path)
+    try:
+        model = torch.load(args.model_path)
+    except:
+        print("invalid model path, please check your parameter again.")
+        sys.exit(0)
     grad_cam = GradCam(model=model, feature_module=model.layer4, \
                        target_layer_names=["2"], use_cuda=args.use_cuda)
 
-    #os.chdir("/datasets")
-    img = cv2.imread(args.image_path, 1)
-    #print(img)
-    img = np.float32(cv2.resize(img, (224, 224))) / 255
+    if args.custom_image_path is not None:
+        img = cv2.imread(args.custom_image_path, 1)
+    else:
+        img = cv2.imread(args.image_path, 1)
+        
+    try:
+        img = np.float32(cv2.resize(img, (224, 224))) / 255
+    except:
+        print("invalid image path, please check your parameter again.")
+        sys.exit(0)
+
     input = preprocess_image(img)
 
     # If None, returns the map for the highest scoring category.
@@ -281,5 +305,3 @@ if __name__ == '__main__':
 
     cv2.imwrite('results/gradcam/' + args.save_path_gb, gb)
     cv2.imwrite('results/gradcam/' + args.save_path_cam_gb, cam_gb)
-    #cv2.imwrite('results/gb.jpg', gb)
-    #cv2.imwrite('results/cam_gb.jpg', cam_gb)

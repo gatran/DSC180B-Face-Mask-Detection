@@ -1,9 +1,20 @@
+################################################################
+# Implemented by TianHong Dai (tianhong.dai15@imperial.ac.uk)  #
+#                                                              #
+# PyTorch-compatible implmentation of Integrated Gradients     # 
+# proposed in "Axiomatic attribution for deep neuron networks" #
+# (https://arxiv.org/abs/1703.01365).                          #
+#                                                              #
+# Keywords: Shapley values, interpretable machine learning     #
+################################################################
+
 import torch
 import numpy as np
 import torch.nn.functional as F
 import cv2
 import argparse
 import os
+import sys
 
 # integrated gradients
 def integrated_gradients(inputs, model, target_label_idx, predict_and_gradients, baseline, steps=50, cuda=False):
@@ -154,6 +165,8 @@ def get_args():
                         help='Use NVIDIA GPU acceleration')
     parser.add_argument('--model-path', type=str, default=os.path.join('../DSC180B-Face-Mask-Detection/models', 'model_resnet_best_val_acc_0.955.pt'),
                         help='Load model path')
+    parser.add_argument('--custom-image-path', type=str, default=None,
+                        help='the custom image path')
     parser.add_argument('--img-load-path', type=str, help='the image loading path')
     parser.add_argument('--img-save-path', type=str, help='the image saving path')
     args = parser.parse_args()
@@ -171,15 +184,29 @@ if __name__ == '__main__':
     model_path = args.model_path
     img_load_path = args.img_load_path
     img_save_path = args.img_save_path
+    custom_image_path = args.custom_image_path
    
-    model = torch.load(model_path)   
+    try:
+        model = torch.load(model_path)   
+    except:
+        print("invalid model path, please check your parameter again")
+        sys.exit(0)
+        
     device = torch.device("cuda:0" if args.use_cuda else "cpu")
     model.to(device)
     
     # read the image
-    img = cv2.imread(img_load_path)
-
-    img = cv2.resize(img, (224, 224))
+    if custom_image_path is not None:
+        img = cv2.imread(custom_image_path)
+    else:
+        img = cv2.imread(img_load_path)
+    
+    try:
+        img = cv2.resize(img, (224, 224))
+    except:
+        print("invalid image path, please check your parameter again")
+        sys.exit(0)
+        
     img = img.astype(np.float32) 
     img = img[:, :, (2, 1, 0)]
     # calculate the gradient and the label index
