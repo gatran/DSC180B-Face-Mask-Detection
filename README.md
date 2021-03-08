@@ -15,7 +15,7 @@ Link to website: https://athena112233.github.io/DSC180B_Project_Webpage/
 * This folder contains a trained model parameters(model.pt)
 
 ##### my_image
-* This folder contains all the custom images that you want the model to test on.
+* This folder contains all the custom images that you want the model to test on. This folder will only be created when a custom image path is provided in /config
 
 ##### notebook
 * This folder contains the exploratory data analysis(EDA) of the MaskedFace-Net.
