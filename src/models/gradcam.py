@@ -273,7 +273,10 @@ if __name__ == '__main__':
     # feature method, and a classifier method,
     # as in the VGG models in torchvision.
     try:
-        model = torch.load(args.model_path)
+        if args.use_cuda:
+            model = torch.load(args.model_path)
+        else:
+            model = torch.load(args.model_path, map_location="cpu")
     except:
         print("invalid model path, please check your parameter again.")
         sys.exit(0)

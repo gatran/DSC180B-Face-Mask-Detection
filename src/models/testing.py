@@ -159,7 +159,10 @@ if __name__ == '__main__':
 
     
     try:
-        model = torch.load(model_path)
+        if args.use_cuda:
+            model = torch.load(model_path)
+        else:
+            model = torch.load(model_path, map_location="cpu")
     except:
         print("invalid model path, please check your parameter again")
         sys.exit(0)
