@@ -33,7 +33,7 @@ Link to website: https://athena112233.github.io/DSC180B_Project_Webpage/
 * `submission.json` contains the general structure of this repo.
 
 ### How to run this repo with explanation:
-*  Please visit the `EDA.ipynb` inside the `notebook folder` to understand the MaskedFace-Net. if github fails to display the image inside the notebook, please refer to `EDA.pdf`. Also, feel free to execute `EDA.py` to generate other set of images for visualization.
+*  Please visit the `EDA.ipynb` inside the `notebook folder` to understand the MaskedFace-Net. Once you understand the daatset, then you can process to run the repo
 
 To run this repo, run the following lines in a terminal
 

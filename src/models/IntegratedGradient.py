@@ -15,6 +15,7 @@ import cv2
 import argparse
 import os
 import sys
+import random
 
 # integrated gradients
 def integrated_gradients(inputs, model, target_label_idx, predict_and_gradients, baseline, steps=50, cuda=False):
@@ -224,4 +225,7 @@ if __name__ == '__main__':
     output_img = generate_entrie_images(img, img_gradient, img_gradient_overlay, img_integrated_gradient, \
                                         img_integrated_gradient_overlay)
     
-    cv2.imwrite("results/integrated_gradient/" + img_save_path, np.uint8(output_img))
+    if custom_image_path is not None:
+        cv2.imwrite("results/integrated_gradient/custom_{0}.jpg".format(random.randint(1, 10000)), np.uint8(output_img))
+    else:
+        cv2.imwrite("results/integrated_gradient/" + img_save_path, np.uint8(output_img))

@@ -145,16 +145,18 @@ if __name__ == '__main__':
         
     # Use MaskedFace-Net 
     maskedface_net_val = image_datasets['validation']
-    val_sub = torch.utils.data.Subset(maskedface_net_val, np.random.choice(len(maskedface_net_val), test_size, replace=False))
+    val_sub = torch.utils.data.Subset(maskedface_net_val, np.random.choice(len(maskedface_net_val), 1, replace=False))
     data_loader_val_sub = torch.utils.data.DataLoader(val_sub,
                                                       batch_size=batch_size, 
                                                       shuffle=True)
     
-    maskedface_net_test = image_datasets['holdout']
-    test_sub = torch.utils.data.Subset(maskedface_net_test, np.random.choice(len(maskedface_net_test), test_size, replace=False))
+    maskedface_net_test = image_datasets['holdout']   
+    test_sub = torch.utils.data.Subset(maskedface_net_test, np.random.choice(len(maskedface_net_test), 1, replace=False))
     data_loader_test_sub = torch.utils.data.DataLoader(test_sub,
                                                       batch_size=batch_size, 
                                                       shuffle=True)
+    
+
     
     try:
         model = torch.load(model_path)
@@ -169,25 +171,22 @@ if __name__ == '__main__':
     val_total = 0
     test_correct = 0
     test_total = 0
-    print("len of val:", len(maskedface_net_val))
-    print("len of test:", len(maskedface_net_test))
     with torch.no_grad():
         for val_inputs, val_labels in data_loader_val_sub:
             val_inputs = val_inputs.to(device)
+            val_labels = torch.tensor(np.array(val_labels).astype(int)) # to delete
             val_labels = val_labels.to(device)
             val_outputs = model(val_inputs)
             _, predicted = torch.max(val_outputs.data, 1)
             val_total += val_labels.size(0)
             val_correct += (predicted == val_labels).sum().item()
-            print("val total:" , val_total)
-            #print(val_correct)
         for test_inputs, test_labels in data_loader_test_sub:
             test_inputs = test_inputs.to(device)
+            test_labels = torch.tensor(np.array(test_labels).astype(int)) # to delete
             test_labels = test_labels.to(device)
             test_outputs = model(test_inputs)
             _, predicted = torch.max(test_outputs.data, 1)
             test_total += test_labels.size(0)
-            print("test total:", test_total)
             test_correct += (predicted == test_labels).sum().item()
 
     print('Accuracy of the network on the validation set: %d %%' % (100 * val_correct / val_total))

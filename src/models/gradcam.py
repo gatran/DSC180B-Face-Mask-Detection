@@ -16,6 +16,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+import random
 from torch.autograd import Function
 from torchvision import models
 
@@ -86,13 +87,17 @@ def preprocess_image(img):
     return input
 
 
-def show_cam_on_image(img, mask):
+def show_cam_on_image(img, mask, random_num=None):
     args = get_args()
     heatmap = cv2.applyColorMap(np.uint8(255 * mask), cv2.COLORMAP_JET)
     heatmap = np.float32(heatmap) / 255
     cam = heatmap + np.float32(img)
     cam = cam / np.max(cam)
-    cv2.imwrite('results/gradcam/' + args.save_path_cam, np.uint8(255 * cam))
+    if random_num is not None:
+        cv2.imwrite('results/gradcam/cam_{0}.jpg'.format(random_num), np.uint8(255 * cam))
+    else:
+        print('results/gradcam' + args.save_path_cam)
+        cv2.imwrite('results/gradcam/' + args.save_path_cam, np.uint8(255 * cam))
     #cv2.imwrite("results/cam.jpg", np.uint8(255 * cam))
 
 
@@ -292,9 +297,13 @@ if __name__ == '__main__':
     # Otherwise, targets the requested index.
     target_index = None
     mask = grad_cam(input, target_index)
-
-    show_cam_on_image(img, mask)
-
+    
+    if args.custom_image_path is not None:
+        random_num = random.randint(1, 10000)
+        show_cam_on_image(img, mask, random_num)
+    else:
+        show_cam_on_image(img, mask)
+        
     gb_model = GuidedBackpropReLUModel(model=model, use_cuda=args.use_cuda)
     print(model._modules.items())
     gb = gb_model(input, index=target_index)
@@ -303,5 +312,9 @@ if __name__ == '__main__':
     cam_gb = deprocess_image(cam_mask*gb)
     gb = deprocess_image(gb)
 
-    cv2.imwrite('results/gradcam/' + args.save_path_gb, gb)
-    cv2.imwrite('results/gradcam/' + args.save_path_cam_gb, cam_gb)
+    if args.custom_image_path is not None:
+        cv2.imwrite('results/gradcam/gb_{0}.jpg'.format(random_num), gb)
+        cv2.imwrite('results/gradcam/cam_gb_{0}.jpg'.format(random_num), cam_gb)
+    else:
+        cv2.imwrite('results/gradcam/' + args.save_path_gb, gb)
+        cv2.imwrite('results/gradcam/' + args.save_path_cam_gb, cam_gb)
