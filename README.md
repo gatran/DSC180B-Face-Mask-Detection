@@ -9,7 +9,7 @@ Link to website: https://athena112233.github.io/DSC180B_Project_Webpage/
 * This repo is about training an Convolutional Neunral Network(CNN) image classification model on MaskedFace-Net. MaskedFace-Net is a dataset that contains more than 60,000 images of person either wearing a mask not. For images that contain a person wearing a mask, the dataset is further splited into either a person is wearing a mask properly or not. In this repo, we've trained a model on this dataset and also implemented a Grad-CAM algorithm on the model.
 
 ##### config 
-* This folder contains the parameters for running the target. (Make sure the paths to the model and image are correct!)
+* This folder contains the parameters for running each target. (Make sure the paths to the model and image are correct!)
 
 ##### model
 * This folder contains a trained model parameters(model.pt)
@@ -35,10 +35,20 @@ Link to website: https://athena112233.github.io/DSC180B_Project_Webpage/
 ### How to run this repo with explanation:
 *  Please visit the `EDA.ipynb` inside the `notebook folder` to understand the MaskedFace-Net. Once you understand the daatset, then you can process to run the repo
 
-To run this repo, run the following lines in a terminal
+To run this repo on GPU (highly recommended), run the following lines in a terminal
 
 ```
-launch-scipy-ml-gpu.sh
+launch-scipy-ml-gpu.sh -i j0e2r1r0/face-mask-detection -c 4 -m 8
+git clone https://github.com/gatran/DSC180B-Face-Mask-Detection
+cd DSC180B-Face-Mask-Detection
+```
+
+OR
+
+To run this repo on CPU, run the following lines in a terminal
+
+```
+launch.sh -i j0e2r1r0/face-mask-detection -c 4 -m 8
 git clone https://github.com/gatran/DSC180B-Face-Mask-Detection
 cd DSC180B-Face-Mask-Detection
 ```
